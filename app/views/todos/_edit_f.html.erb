@@ -1,0 +1,11 @@
+<%= form_for @todos_edit do |f| %>
+<p>
+    <%= f.label "Todo Title" %><br>
+    <%= f.text_field :title %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+ <%= link_to 'Back', root_path %>
+<% end %>
