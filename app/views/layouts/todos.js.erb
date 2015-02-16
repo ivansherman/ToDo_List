@@ -1,0 +1,6 @@
+<%= yield %>
+
+$("#toggle-all").prop("checked", <%= Todo.active.count == 0 %>);
+
+$("#todoapp").toggleClass("has_todos", <%= Todo.count > 0 %>);
+

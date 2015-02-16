@@ -1,6 +1,9 @@
-class TodosController < ApplicationController
-def index
-	@todo = Todo.all
+class TodosController < ApplicationController\
+  ##helper_method :current_filter
+
+
+  def index
+    @todos = Todo
   end
 
   def active
@@ -16,26 +19,25 @@ def index
   end
 
   def create
-  	@todo = Todo.new(todo_params)
+    @todo = Todo.new(todo_params)
     @todo.save
-    redirect_to root_url
   end
 
   def update
     @todo = Todo.find(params[:id])
     @todo.update(todo_params)
-    redirect_to root_url
   end
 
-  def destroy_completed
-	@todos_for_destruction = Todo.completed.all
-    Todo.completed.destroy_all
-  end
 
   def destroy
     @todo = Todo.find(params[:id])
     @todo.destroy
-    redirect_to root_url
+  end
+
+  def destroy_completed
+    @todos_for_destruction = Todo.completed.all
+    
+    Todo.completed.destroy_all
   end
 
   def toggle
@@ -48,19 +50,42 @@ def index
     @todos = Todo.all
   end
 
-private
+private ## -------------------------------------
+  
+  def set_current_filter(filter)
+    @current_filter = filter
+  end
+
+  def current_filter
+    @current_filter
+  end
 
   def todo_params
     params.require(:todo).permit(:title, :completed)
   end
-
-  ##def set_current_filter(filter)
-  ##  @current_filter = filter
-  ##end
-
-  ##def current_filter
-  ##  @current_filter
-  ##end
 end
+=begin
+ def set_filter
+    path = request.referer
+    return unless path.present?
+    params[:active] = true if path.end_with?(active_todos_path)
+    params[:completed] = true if path.end_with?(completed_todos_path)
+  end
+
+  def set_todos
+    if params[:active]
+      @todos = Todo.active
+    elsif params[:completed] 
+      @todos = Todo.completed
+    else
+      Todo.all
+    end
+  end
+
+  def set_todo
+    @todo = Todo.find(params[:id])
+  end
+=end
+  
 
 
